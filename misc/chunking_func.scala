@@ -11,6 +11,7 @@ def splitRangeIntoChunks(range: Range, chunk_size: Int)
 	  throw new IllegalArgumentException("Range must have step size equal to 1")
 	}
 	  
+	// use (a + b - 1)/b for rounding
 	val num_chunks = (range.length + chunk_size - 1)/chunk_size
 
 	val start_positions = range.by(chunk_size).take(num_chunks)
