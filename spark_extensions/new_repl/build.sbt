@@ -29,4 +29,8 @@ lazy val assembleSettings = assemblyMergeStrategy in assembly := {
 }
 
 lazy val root = (project in file("."))
-	.settings(commonSettings)
+	.settings(commonSettings,
+		assembleSettings,
+		name := "spark_repl",
+		assemblyJarName := "spark_repl.jar"
+	)

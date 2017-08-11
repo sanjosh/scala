@@ -16,7 +16,7 @@ import scala.tools.nsc.GenericRunnerSettings
 object MyMain extends Logging {
 
   initializeLogIfNecessary(true)
-  Signaling.cancelOnInterrupt()
+  //Signaling.cancelOnInterrupt()
 
   val conf = new SparkConf()
   val rootDir = conf.getOption("spark.repl.classdir").getOrElse(Utils.getLocalDir(conf))
