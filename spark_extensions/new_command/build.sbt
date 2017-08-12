@@ -1,9 +1,6 @@
-// this version 2.11 must match scalaVersion
-// Using %% after groupId should automatically pick up scala version
-// but it didnt work
 lazy val sparkDependencies = Seq(
-  "org.apache.spark" % "spark-core_2.11" % "2.1.0" % "provided",
-  "org.apache.spark" % "spark-sql_2.11" % "2.1.0" % "provided"
+  "org.apache.spark" %% "spark-core" % "2.1.0",
+  "org.apache.spark" %% "spark-sql" % "2.1.0",
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.2"
 )
 
@@ -36,4 +33,9 @@ lazy val assembleSettings = assemblyMergeStrategy in assembly := {
 }
 
 lazy val root = (project in file("."))
-	.settings(commonSettings)
+	.settings(commonSettings,
+		assembleSettings,
+		name := "new_command",
+		assemblyJarName := "new_command.jar",
+	)
+

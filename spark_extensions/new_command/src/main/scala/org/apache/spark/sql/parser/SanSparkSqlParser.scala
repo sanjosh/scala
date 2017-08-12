@@ -1,7 +1,9 @@
 package org.apache.spark.sql.parser
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.catalyst.parser.{AbstractSqlParser, ParseException}
 import org.apache.spark.sql.internal.SQLConf
+import org.apache.spark.sql.catalyst.plans.logical._
 
 /**
   * Created by sandeep on 4/8/17.
@@ -14,13 +16,13 @@ class SanSparkSqlParser(conf: SQLConf, sparkSession: SparkSession) extends Abstr
     try {
       super.parsePlan(sqlText)
     } catch {
-      case ce: MalformedCarbonCommandException =>
+      case ce: ParseException =>
         throw ce
       case ex =>
         try {
           astBuilder.parser.parse(sqlText)
         } catch {
-          case mce: MalformedCarbonCommandException =>
+          case mce: ParseException =>
             throw mce
           case e =>
             sys
