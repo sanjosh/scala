@@ -17,3 +17,5 @@ def currentActiveExecutors(sc: SparkContext): Seq[String] = {
   allExecutors.filter(! _.split(":")(0).equals(driverHost)).toList
 }
 
+On UI check executors under Application Detail UI 
+http://0.0.0.0:4040/jobs/
