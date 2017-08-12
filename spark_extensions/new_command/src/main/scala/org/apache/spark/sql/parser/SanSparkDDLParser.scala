@@ -6,9 +6,9 @@ import scala.util.parsing.combinator.PackratParsers
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 
 abstract class SanSparkAbstractDDLParser extends StandardTokenParsers with PackratParsers {
-  def parse(input: String): LogicalPlan = {
-
-  }
+  //def parse(input: String): LogicalPlan = {
+	//new LogicalPlan
+  //}
 }
 
 class SanSparkDDLParser extends SanSparkAbstractDDLParser {

@@ -36,6 +36,6 @@ lazy val root = (project in file("."))
 	.settings(commonSettings,
 		assembleSettings,
 		name := "new_command",
-		assemblyJarName := "new_command.jar",
+		assemblyJarName := "new_command.jar"
 	)
 
