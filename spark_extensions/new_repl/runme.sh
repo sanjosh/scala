@@ -1,1 +1,2 @@
-/usr/lib/jvm/java-8-openjdk-amd64/jre//bin/java -cp /home/sandeep/dev/scala/spark_extensions/new_repl/target/scala-2.11:/home/sandeep/utils/DB/spark_july/spark/conf/:/home/sandeep/utils/DB/spark_july/spark/assembly/target/scala-2.11/jars/* -Dscala.usejavacp=true -Xmx1g org.apache.spark.deploy.SparkSubmit --master spark://localhost:7077 --class org.apache.spark.repl.MyMain --name SparkShell2 custom-shell
+# does not work
+/usr/lib/jvm/java-8-openjdk-amd64/jre//bin/java -Dscala.usejavacp=true -Xmx1g -jar /home/sandeep/dev/scala/spark_extensions/new_repl/target/scala-2.11/spark_repl.jar org.apache.spark.deploy.SparkSubmit --master spark://localhost:7077 --class org.apache.spark.repl.MyMain --name SparkShell2 custom-shell
