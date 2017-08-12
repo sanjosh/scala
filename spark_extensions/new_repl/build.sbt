@@ -1,10 +1,8 @@
-// this version 2.11 must match scalaVersion
-// Using %% after groupId should automatically pick up scala version
-// but it didnt work
+// putting %% ensures it picks approp scala version of spark library
 lazy val sparkDependencies = Seq(
-  "org.apache.spark" % "spark-core_2.11" % "2.1.0" % "provided",
-  "org.apache.spark" % "spark-sql_2.11" % "2.1.0" % "provided",
-  "org.apache.spark" % "spark-repl_2.11" % "2.1.0" % "provided"
+  "org.apache.spark" %% "spark-core" % "2.1.0",
+  "org.apache.spark" %% "spark-sql" % "2.1.0",
+  "org.apache.spark" %% "spark-repl" % "2.1.0" 
 )
 
 lazy val commonSettings = Seq(
@@ -16,8 +14,15 @@ lazy val commonSettings = Seq(
 )
 
 lazy val assembleSettings = assemblyMergeStrategy in assembly := {
+	case PathList("org","aopalliance", xs @ _*) => MergeStrategy.last
+  	case PathList("javax", "inject", xs @ _*) => MergeStrategy.last
+	case PathList("javax", "servlet", xs @ _*) => MergeStrategy.last
+	case PathList("javax", "activation", xs @ _*) => MergeStrategy.last
 	case PathList("org", "apache", xs @ _*) => MergeStrategy.last
 	case PathList("com", "google", xs @ _*) => MergeStrategy.last
+	case PathList("com", "esotericsoftware", xs @ _*) => MergeStrategy.last
+	case PathList("com", "codahale", xs @ _*) => MergeStrategy.last
+	case PathList("com", "yammer", xs @ _*) => MergeStrategy.last
     case PathList("META-INF", xs @ _*) => MergeStrategy.discard
 	case "about.html" => MergeStrategy.rename
     case "overview.html" => MergeStrategy.rename

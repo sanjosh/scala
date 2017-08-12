@@ -16,7 +16,7 @@ import scala.collection.mutable
 /**
   * Created by sandeep on 12/8/17.
   */
-class CustomCoarseGrainedExecutorBackend(override val rpcEnv: RpcEnv,
+class CustomExecutorBackend(override val rpcEnv: RpcEnv,
                                       driverUrl: String,
                                       executorId: String,
                                       hostname: String,
@@ -31,7 +31,7 @@ class CustomCoarseGrainedExecutorBackend(override val rpcEnv: RpcEnv,
 
 
 // Copied from CoarseGrainedExecutorBackend
-object CustomCoarseGrainedExecutorBackend extends Logging {
+object CustomExecutorBackend extends Logging {
 
   private def run(
       driverUrl: String,
@@ -83,7 +83,7 @@ object CustomCoarseGrainedExecutorBackend extends Logging {
       val env = SparkEnv.createExecutorEnv(
         driverConf, executorId, hostname, port, cores, cfg.ioEncryptionKey, isLocal = false)
 
-      env.rpcEnv.setupEndpoint("Executor", new CustomCoarseGrainedExecutorBackend(
+      env.rpcEnv.setupEndpoint("Executor", new CustomExecutorBackend(
         env.rpcEnv, driverUrl, executorId, hostname, cores, userClassPath, env))
       workerUrl.foreach { url =>
         env.rpcEnv.setupEndpoint("WorkerWatcher", new WorkerWatcher(env.rpcEnv, url))
@@ -149,7 +149,7 @@ object CustomCoarseGrainedExecutorBackend extends Logging {
     // scalastyle:off println
     System.err.println(
       """
-      |Usage: CustomCoarseGrainedExecutorBackend [options]
+      |Usage: CustomExecutorBackend [options]
       |
       | Options are:
       |   --driver-url <driverUrl>
