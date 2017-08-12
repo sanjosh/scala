@@ -3,7 +3,8 @@
 // but it didnt work
 // removed "provided" 
 lazy val sparkDependencies = Seq(
-  "org.apache.spark" %% "spark-core" % "2.1.0" 
+  "org.apache.spark" %% "spark-core" % "2.1.0",
+  "org.apache.spark" %% "spark-repl" % "2.1.0" 
 )
 
 lazy val commonSettings = Seq(
