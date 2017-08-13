@@ -19,18 +19,10 @@ class SanSparkSqlParser(conf: SQLConf, sparkSession: SparkSession) extends Abstr
       super.parsePlan(sqlText)
     } catch {
       case ce: ParseException =>
-        throw ce
+        astBuilder.parser.parse(sqlText)
       case ex: Throwable =>
-        try {
-          astBuilder.parser.parse(sqlText)
-        } catch {
-          case mce: ParseException =>
-            throw mce
-          case e: Throwable =>
-            sys
-              .error("\n" + "BaseSqlParser>>>> " + ex.getMessage + "\n" + "CarbonSqlParser>>>> " +
-                     e.getMessage)
-        }
+        sys.error("\n" + "BaseSqlParser>>>> " + ex.getMessage 
+			+ "\n" + "CarbonSqlParser>>>> " + ex.getMessage)
     }
   }
 }

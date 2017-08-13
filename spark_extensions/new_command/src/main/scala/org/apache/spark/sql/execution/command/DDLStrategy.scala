@@ -10,7 +10,14 @@ import org.apache.spark.sql.execution.{SparkPlan, SparkStrategy}
 class DDLStrategy(sparkSession: SparkSession) extends SparkStrategy {
   def apply(plan: LogicalPlan): Seq[SparkPlan] = {
     plan match{
-      case PrintCommand(parameter) => ExecutedCommandExec(PrintRunnableCommand(parameter)) :: Nil
+      case printcmd@PrintCommand(parameter) => {
+        println("creating physical PrintRunnableCommand")
+        ExecutedCommandExec(PrintRunnableCommand(printcmd)) :: Nil
+      }
+      case _ => {
+        logInfo("failed")
+        Nil
+      }
     }
   }
 }

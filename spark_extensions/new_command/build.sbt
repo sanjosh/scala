@@ -1,7 +1,7 @@
 lazy val sparkDependencies = Seq(
-  "org.apache.spark" %% "spark-core" % "2.1.0",
-  "org.apache.spark" %% "spark-sql" % "2.1.0",
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.2"
+  "org.apache.spark" %% "spark-core" % "2.1.0" % "provided",
+  "org.apache.spark" %% "spark-sql" % "2.1.0" % "provided",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.2" % "provided"
 )
 
 lazy val commonSettings = Seq(
