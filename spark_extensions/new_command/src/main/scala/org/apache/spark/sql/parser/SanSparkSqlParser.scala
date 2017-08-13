@@ -15,29 +15,28 @@ class SanSparkSqlParser(conf: SQLConf, sparkSession: SparkSession) extends Abstr
 
   override def parsePlan(sqlText: String): LogicalPlan = {
 
+    try {
       super.parsePlan(sqlText)
-	/*
     } catch {
       case ce: ParseException =>
         throw ce
-      case ex =>
+      case ex: Throwable =>
         try {
-          //astBuilder.parser.parse(sqlText)
+          astBuilder.parser.parse(sqlText)
         } catch {
           case mce: ParseException =>
             throw mce
-          case e =>
+          case e: Throwable =>
             sys
               .error("\n" + "BaseSqlParser>>>> " + ex.getMessage + "\n" + "CarbonSqlParser>>>> " +
                      e.getMessage)
         }
     }
-	*/
   }
 }
 
 class SanSqlAstBuilder(conf: SQLConf) extends SparkSqlAstBuilder(conf) {
 
-  //val parser = new SanSparkDDLParser
+  val parser = new SanSparkExtendedSqlParser
 
 }
