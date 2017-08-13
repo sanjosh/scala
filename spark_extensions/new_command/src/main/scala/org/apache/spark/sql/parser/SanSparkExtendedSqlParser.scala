@@ -19,38 +19,37 @@ package org.apache.spark.sql.parser
 
 import scala.collection.mutable
 import scala.language.implicitConversions
+import scala.util.parsing.combinator.lexical.StdLexical
+import scala.util.parsing.combinator.syntactical.StandardTokenParsers
+
 import org.apache.spark.sql.PrintCommand
-import org.apache.spark.sql.catalyst.SanDDLSqlParser
 import org.apache.spark.sql.catalyst.plans.logical._
 
 
 /**
- * Parser for DDL
+ * Parser for DDL command "PRINTME <somestring>"
  */
-class SanSparkExtendedSqlParser extends SanDDLSqlParser {
+class SanSparkExtendedSqlParser extends StandardTokenParsers {
 
-  override def parse(input: String): LogicalPlan = {
+  lexical.reserved += ("PRINTME")
+
+  def parse(input: String): LogicalPlan = {
     synchronized {
       // Initialize the Keywords.
-      initLexical
-      phrase(start)(new lexical.Scanner(input)) match {
-        case Success(plan, _) => plan match {
-          case x: PrintCommand =>
-            x
-        }
+	  val tokens = new lexical.Scanner(input)
+      phrase(start)(tokens) match {
+        case Success(plan, _) => plan 
         case failureOrError =>
           sys.error(failureOrError.toString)
       }
     }
   }
 
-
   protected lazy val start: Parser[LogicalPlan] = printCommand
 
   protected lazy val printCommand: Parser[LogicalPlan] =
-    PRINTME ~> (ident) ^^ {
-      case parameter =>
-        PrintCommand(parameter)
-    }
-
+    "PRINTME" ~> ident ^^ {
+	  case ident => PrintCommand(ident)
+	}
 }
+
