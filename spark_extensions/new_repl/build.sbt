@@ -1,8 +1,8 @@
 // putting %% ensures it picks approp scala version of spark library
 lazy val sparkDependencies = Seq(
-  "org.apache.spark" %% "spark-core" % "2.1.0",
-  "org.apache.spark" %% "spark-sql" % "2.1.0",
-  "org.apache.spark" %% "spark-repl" % "2.1.0" 
+  "org.apache.spark" %% "spark-core" % "2.1.0" % "provided",
+  "org.apache.spark" %% "spark-sql" % "2.1.0" % "provided",
+  "org.apache.spark" %% "spark-repl" % "2.1.0" % "provided"
 )
 
 lazy val commonSettings = Seq(
