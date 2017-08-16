@@ -22,5 +22,9 @@ def currentActiveExecutors(sc: SparkContext): Seq[String] = {
 
 Or check executors under Application Detail UI 
 ```
+http://0.0.0.0:4040/executors/
+```
+or event timeline under
+```
 http://0.0.0.0:4040/jobs/
 ```
