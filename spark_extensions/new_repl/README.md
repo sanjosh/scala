@@ -1,5 +1,7 @@
-#compile
-sbt package
+# Compile
 
-#Running
-runme.sh
+> sbt package
+
+# Run
+
+> $SPARK_HOME/bin/spark-shell --master spark://localhost:7077 --jars target/scala-2.11/spark_repl_2.11*.jar --class org.apache.spark.repl.MyMain

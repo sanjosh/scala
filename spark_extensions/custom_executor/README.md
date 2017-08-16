@@ -1,21 +1,26 @@
 
-# how to compile
-sbt assembly
+# How to compile
+> sbt assembly
 
 # How to run
-runme.sh
+Spark driver port has to set to that of the running App or Spark Shell
+Worker port has to be set to the one that the worker is listening on
+> ./runme.sh $worker_port $driver_port
 
-# command line from unmodified executor
+This will start a new executor.  
 
-/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java -cp /home/sandeep/utils/DB/spark_july/spark/conf/:/home/sandeep/utils/DB/spark_july/spark/assembly/target/scala-2.11/jars/* -Xmx1024M -Dspark.driver.port=46561 org.apache.spark.executor.CoarseGrainedExecutorBackend --driver-url spark://CoarseGrainedScheduler@0.0.0.0:46561 --executor-id 0 --hostname 0.0.0.0 --cores 4 --app-id app-20170812151722-0000 --worker-url spark://Worker@0.0.0.0:38173
+# How to find if newly added executor has been registered
 
-# to find current active executors 
-
+In spark shell, define this function and call it
+```
 def currentActiveExecutors(sc: SparkContext): Seq[String] = {
   val allExecutors = sc.getExecutorMemoryStatus.map(_._1)
   val driverHost: String = sc.getConf.get("spark.driver.host")
   allExecutors.filter(! _.split(":")(0).equals(driverHost)).toList
 }
+```
 
-On UI check executors under Application Detail UI 
+Or check executors under Application Detail UI 
+```
 http://0.0.0.0:4040/jobs/
+```
