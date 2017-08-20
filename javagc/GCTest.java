@@ -5,7 +5,16 @@ import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 
 /**
- * Soft ref for implementing cache
+ * object pointed to by strong ref never reclaimed
+ * use soft ref to point to object which is being cached (but can be dispensed)
+ * use weak ref to build weak collections, 
+ *   to store metadata about obj only as long as they live
+ * use phantom ref to know if referent(obj being pointed to) has been gc'ed
+ *   get() always returns null
+ *   use for connection pool
+ * http://www.kdgregory.com/index.php?page=java.refobj
+ * https://www.ibm.com/developerworks/library/j-jtp01246/index.html
+ * https://www.ibm.com/developerworks/java/library/j-jtp11225/index.html
  */
 public class GCTest {
 
