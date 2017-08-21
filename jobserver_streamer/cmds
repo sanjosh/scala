@@ -1,0 +1,11 @@
+curl --data-binary @`pwd`/target/scala-2.11/streamer_2.11-0.1.0-SNAPSHOT.jar localhost:8090/jars/wordcount
+
+curl -d "" "localhost:8090/contexts/wordcount?num-cpu-cores=2&memmory-per-node=512m"
+
+curl -d "input.string= a b c a b see" "localhost:8090/jobs?appName=wordcount&classPath=io.sj.streamer.WordCountExampleLatest&context=wordcount&sync=true"
+
+curl -d "input.string= a b c a b see" "localhost:8090/jobs?appName=wordcount&classPath=io.sj.streamer.WordCountExampleNewApi&context=wordcount&sync=true"
+
+curl -d "input.string= a b c a b see" "localhost:8090/jobs?appName=wordcount&classPath=io.sj.streamer.WordCountExample&context=wordcount&sync=true"
+
+
