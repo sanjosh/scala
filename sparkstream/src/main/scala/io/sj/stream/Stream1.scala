@@ -36,22 +36,22 @@ object Stream1 {
     val counter = words.groupBy("value").count
 
     val query = counter.writeStream
-	  .format("parquet")
-	  .outputMode("append")
+	  .format("console")
+	  .outputMode("complete")
 	  .trigger(ProcessingTime(10, TimeUnit.SECONDS))
-	  .option("checkpointLocation", "/home/sandeep")
+	  //.option("checkpointLocation", "/home/sandeep")
 	  .start("groupby.json")
 
     val counter2 = words.groupBy("value").count
 
     val query2 = counter.writeStream
-	  .format("parquet")
-	  .outputMode("append")
+	  .format("console")
+	  .outputMode("complete")
 	  .trigger(ProcessingTime(10, TimeUnit.SECONDS))
-	  .option("checkpointLocation", "/home/sandeep")
+	  //.option("checkpointLocation", "/home/sandeep")
 	  .start("groupby2.json")
 
-	query.awaitTermination(1000 * 60)
-	query2.awaitTermination(1000 * 60)
+	query.awaitTermination(1000 * 6000)
+	query2.awaitTermination(1000 * 6000)
   }
 }
