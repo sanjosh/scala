@@ -20,20 +20,25 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.FSDirectory;
 
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.ParseException;
 
 public class HelloLucene {
+
+    static final String INDEX_DIRECTORY = "/tmp/index";
+
     public static void main(String[] args) throws IOException, ParseException {
         // Specify the analyzer for tokenizing text.
         // The same analyzer should be used for indexing and searching
         StandardAnalyzer analyzer = new StandardAnalyzer();
 
         // Create the index
-        Directory index = new RAMDirectory();
+        Directory index = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
 
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
 
