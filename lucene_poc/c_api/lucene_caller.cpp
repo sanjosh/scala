@@ -4,7 +4,8 @@
 
 /**
  * http://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/types.html
- * use output of javap -s 
+ * 
+ * use output of javap -s to find method signature
  */
  
 int main(int argc, char **argv)
@@ -13,12 +14,11 @@ int main(int argc, char **argv)
     JNIEnv         *env;
     JavaVMInitArgs  vm_args;
     jint            res;
-    //jstring         jstr;
-    //jobjectArray    main_args;
  
     vm_args.version  = JNI_VERSION_1_8;
     vm_args.nOptions = 1;
 
+		// pick this from command line 
 	  char* cp = (char *)"-Djava.class.path=.:/home/sandeep/.m2/repository/org/apache/lucene/lucene-core/6.6.0/lucene-core-6.6.0.jar:/home/sandeep/.m2/repository/org/apache/lucene/lucene-queryparser/6.6.0/lucene-queryparser-6.6.0.jar";
 
 		JavaVMOption opts[2];
@@ -46,7 +46,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
- 
 		// StandardAnalyzer analyzer = new StandardAnalyzer()
     jclass analyzer_cls = env->FindClass("org/apache/lucene/analysis/standard/StandardAnalyzer"); 
     if (analyzer_cls == nullptr) {
@@ -59,8 +58,6 @@ int main(int argc, char **argv)
         printf("Failed to find analyzer_ctor \n");
         return 1;
     }
- 
-		jobject analyzer = env->NewObject(analyzer_cls, analyzer_ctor);
 
 		// Query q = new QueryParser("title", analyzer)
     jclass queryparser_cls = env->FindClass("org/apache/lucene/queryparser/classic/QueryParser"); 
@@ -68,32 +65,80 @@ int main(int argc, char **argv)
         printf("Failed to find QueryParser class\n");
         return 1;
     }
- 
-		try {
 
-			jmethodID queryparser_ctor = env->GetMethodID(queryparser_cls, 
-				"<init>", 
-				"(Ljava/lang/String;Lorg/apache/lucene/analysis/Analyzer;)V");
-			if (queryparser_ctor == nullptr) {
-					printf("Failed to find queryparser_ctor \n");
-					return 1;
-			}
+		jmethodID queryparser_ctor = env->GetMethodID(queryparser_cls, 
+			"<init>", 
+			"(Ljava/lang/String;Lorg/apache/lucene/analysis/Analyzer;)V");
+		if (queryparser_ctor == nullptr) {
+				printf("Failed to find queryparser_ctor \n");
+				return 1;
+		}
+
+		jmethodID parse_method = env->GetMethodID(queryparser_cls, 
+			"parse", 
+			"(Ljava/lang/String;)Lorg/apache/lucene/search/Query;");
+		if (parse_method == nullptr) {
+				printf("Failed to find parse method \n");
+				return 1;
+		}
+
+    jclass directory_reader_cls = env->FindClass("org/apache/lucene/index/DirectoryReader"); 
+    if (directory_reader_cls == nullptr) {
+        printf("Failed to find DirectoryReader class\n");
+        return 1;
+    }
+
+		jmethodID open_method = env->GetStaticMethodID(directory_reader_cls, 
+			"open", 
+			"(Lorg/apache/lucene/store/Directory;)Lorg/apache/lucene/index/DirectoryReader;");
+
+		if (open_method == nullptr) {
+				printf("Failed to find open method \n");
+				return 1;
+		}
+
+    jclass index_searcher_cls = env->FindClass("org/apache/lucene/search/IndexSearcher"); 
+    if (index_searcher_cls == nullptr) {
+        printf("Failed to find IndexSearcher class\n");
+        return 1;
+    }
+
+		jmethodID index_searcher_ctor = env->GetMethodID(index_searcher_cls, 
+			"<init>", 
+			"(Lorg/apache/lucene/index/IndexReader;)V");
+		if (index_searcher_ctor == nullptr) {
+				printf("Failed to find IndexSearcher ctor \n");
+				return 1;
+		}
+
+    jclass top_collector_cls = env->FindClass("org/apache/lucene/search/TopScoreDocCollector"); 
+    if (top_collector_cls == nullptr) {
+        printf("Failed to find TopScoreDocCollector class\n");
+        return 1;
+    }
+
+		jmethodID top_collector_create = env->GetStaticMethodID(top_collector_cls, 
+			"create", 
+			"(I)Lorg/apache/lucene/search/TopScoreDocCollector;");
+		if (top_collector_create == nullptr) {
+				printf("Failed to find TopScoreDocCollector create \n");
+				return 1;
+		}
+
+		jobject analyzer = env->NewObject(analyzer_cls, analyzer_ctor);
+
+		try {
 
 			jobject queryparser = env->NewObject(queryparser_cls, 
 				queryparser_ctor, 
 				"title",
 				analyzer);
-	 
-			jmethodID parse_method = env->GetMethodID(queryparser_cls, "parse", "(Ljava/lang/String;)Lorg/apache/lucene/search/Query;");
-			if (parse_method == nullptr) {
-					printf("Failed to find parse method \n");
-					return 1;
-			}
 
 			jobject search_string = env->NewObject(string_cls, string_ctor, "title");
 
 			// Call QueryParser.parse(search_string)
-			env->CallObjectMethod(queryparser, parse_method, search_string);
+			jobject ret = env->CallObjectMethod(queryparser, parse_method, search_string);
+			(void)ret;
 
 		} catch (const std::exception& e) { 
 			std::cout << e.what() << std::endl;
