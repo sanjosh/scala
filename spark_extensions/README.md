@@ -3,6 +3,8 @@
 
 Code related to [meetup talk](https://www.slideshare.net/SandeepJoshi55/apache-spark-undocumented-extensions-78929290)
 
+[meetup link](https://www.meetup.com/Distributed-Systems-Meetup/events/242156704/)
+
 Each project demonstrates a way to extend Apache Spark
 
 1. [How to add a new DDL command](new_command)
